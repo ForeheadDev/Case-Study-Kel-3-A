@@ -153,7 +153,7 @@ address HapusPegawai(address root, Pegawai pegawai)
 
     return root;
 }
-void HapusSemuaPegawai(address pegawai)
+void HapusSemuaPegawai(address* pegawai)
 {
     /*
     * [Author]
@@ -163,11 +163,12 @@ void HapusSemuaPegawai(address pegawai)
     * [Deskripsi]
     * Mendealokasikan semua Pegawai yang terdapat di dalam DataPegawai
     */
-    if(pegawai == NULL)
+    if(*pegawai == NULL)
 		return;
-	HapusSemuaPegawai(pegawai->left);
-	HapusSemuaPegawai(pegawai->right);
-	free(pegawai);
+	HapusSemuaPegawai(&(*pegawai)->left);
+	HapusSemuaPegawai(&(*pegawai)->right);
+	free(*pegawai);
+    *pegawai = NULL;
 }
 address CariPegawai(address root, int id)
 {
@@ -242,6 +243,6 @@ void PrintPegawaiInOrder(address pegawai)
     if(pegawai == NULL)
 		return;
 	PrintPegawaiInOrder(pegawai->left);
-	printf("%02d - %s\n",pegawai->id,pegawai->nama);
+	printf("%d - %s\n",pegawai->id,pegawai->nama);
 	PrintPegawaiInOrder(pegawai->right);
 }

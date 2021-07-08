@@ -27,13 +27,14 @@ int main()
 	BuatDataPegawai(&D);
 
 	address root = TambahPegawai(&D.root, 1, "test");
+	address rootsd12a = TambahPegawai(&D.root, 7, "test6");
 	address rootsda = TambahPegawai(&D.root, 6, "test6");
 	address root2 = TambahPegawai(&D.root, 4, "test4");
 	address root3 = TambahPegawai(&D.root, -1, "test-1");
 	address root4 = TambahPegawai(&D.root, -2, "test-2");
 
-	Pegawai p;
-	p.id = 1;
+	address p = CariPegawai(D.root, 6);
+	HapusPegawai(D.root, *p);
 	PrintPegawaiInOrder(D.root);
 
 

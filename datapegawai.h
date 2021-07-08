@@ -82,7 +82,7 @@ address HapusPegawai(address root, Pegawai pegawai);
  * Mendealokasikan memori yang dipesan untuk menampung data Pegawai
  */
 
-void HapusSemuaPegawai(address pegawai);
+void HapusSemuaPegawai(address* pegawai);
 /*
  * [Author]
  * Nama : Rafli Lutfiansyah Mauluddin
