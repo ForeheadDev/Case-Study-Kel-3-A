@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "datapegawai.h"
 
 void BuatDataPegawai(DataPegawai* D)
@@ -57,7 +58,7 @@ address BuatPegawai(int id, char* nama)
 
     return P;
 }
-address TambahPegawai(address* root, int value, char* nama)
+address TambahPegawai(address root, int value, char* nama)
 {
     /*
     * [Author]
@@ -67,18 +68,18 @@ address TambahPegawai(address* root, int value, char* nama)
     * [Deskripsi]
     * Menambahkan Pegawai pada DataPegawai
     */
-    if ((*root) == NULL) //kondisi tree kosong
+    if (root == NULL) //kondisi tree kosong
     {
-        (*root) = BuatPegawai(value, nama);
-        return *root;
+        root = BuatPegawai(value, nama);
+        return root;
     }
 
-    if (value < (*root)->id)
-        (*root)->left = TambahPegawai(&(*root)->left, value, nama);
-    else if (value > (*root)->id)
-        (*root)->right = TambahPegawai(&(*root)->right, value, nama);
+    if (value < root->id)
+        root->left = TambahPegawai(root->left, value, nama);
+    else if (value > root->id)
+        root->right = TambahPegawai(root->right, value, nama);
 
-    return *root;
+    return root;
 }
 
 address minIdPegawai(address pegawai)
@@ -92,16 +93,17 @@ address minIdPegawai(address pegawai)
     * Mencari pegawai dengan id terkecil
     */
     address find = pegawai;
-
+	
     // temukan pegawai yang paling kiri
     while (find && find->left != NULL)
     {
-        find = find->left;
-    }
-
+    	find = find->left;
+	}
+	    
     return find;
 }
-address HapusPegawai(address root, Pegawai pegawai)
+
+address HapusPegawai(address root, Pegawai pegawai, bool *status)
 {
     /*
     * [Author]
@@ -110,52 +112,42 @@ address HapusPegawai(address root, Pegawai pegawai)
     * 
     * [Deskripsi]
     * Mendealokasikan memori yang dipesan untuk menampung data Pegawai
-    */   
+    */ 
+    address temp;
+    
     // base case
     if (root == NULL)
-        return root;
-
+        return NULL;
+	
     // Pegawai yang didelete ada di sebelah kiri
     if (pegawai.id < root->id)
-        root->left = HapusPegawai(root->left, pegawai);
+        root->left = HapusPegawai(root->left, pegawai, status);
 
     // Pegawai yang didelete ada di sebelah kanan
     else if (pegawai.id > root->id)
-        root->right = HapusPegawai(root->right, pegawai);
+        root->right = HapusPegawai(root->right, pegawai, status);
 
+    else if (root->left && root->right)
+    {
+        temp = minIdPegawai(root->right);
+        root->id = temp->id;
+        memset(root->nama, 0, 50);
+        memcpy(root->nama, temp->nama, strlen(temp->nama));
+        root->right = HapusPegawai(root->right, *root, status);
+    }
     // Pegawai yang didelete adalah root
     else
     {
-        // Jika punya satu anak
-        if (root->left == NULL)
-        {
-            address temp = root->right;
-            free(root);
-            return temp;
-        }
-        else if (root->right == NULL)
-        {
-            address temp = root->left;
-            free(root);
-            return temp;
-        }
-
-        // jika memiliki dua anak
-
-        // cari inorder successor
-        Pegawai temp = *minIdPegawai(root->right);
-
-        // pindahkan info inorder successor ke root
-        root->id = temp.id;
-        strcpy(root->nama, temp.nama);
-
-        // delete in order successor
-        root->right = HapusPegawai(root->right, temp);
+        address temp = root;
+        if (root->left == NULL) root = root->right;
+        else if (root->right == NULL) root = root->left;
+        free(temp);
+        *status = true;
     }
 
     return root;
 }
-void HapusSemuaPegawai(address* pegawai)
+address HapusSemuaPegawai(address pegawai)
 {
     /*
     * [Author]
@@ -165,12 +157,12 @@ void HapusSemuaPegawai(address* pegawai)
     * [Deskripsi]
     * Mendealokasikan semua Pegawai yang terdapat di dalam DataPegawai
     */
-    if(*pegawai == NULL)
-		return;
-	HapusSemuaPegawai(&(*pegawai)->left);
-	HapusSemuaPegawai(&(*pegawai)->right);
-	free(*pegawai);
-    *pegawai = NULL;
+    if(pegawai == NULL)
+		return NULL;
+	HapusSemuaPegawai(pegawai->left);
+	HapusSemuaPegawai(pegawai->right);
+	free(pegawai);
+    return NULL;
 }
 address CariPegawai(address root, int id)
 {
@@ -190,8 +182,9 @@ address CariPegawai(address root, int id)
         else
             return root;
     }
-    return root;
+    return NULL;
 }
+
 void PrintPegawaiPreOrder(address pegawai)
 {
     /*

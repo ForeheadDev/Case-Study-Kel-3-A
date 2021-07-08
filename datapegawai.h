@@ -20,6 +20,8 @@
 #ifndef __DATA_PEGAWAI_H__
 #define __DATA_PEGAWAI_H__
 
+#include <stdbool.h>
+
 typedef struct _Pegawai* address;
 typedef struct _Pegawai {
     int id;
@@ -52,7 +54,7 @@ address BuatPegawai(int id, char* nama);
  * Mengalokasikan memori untuk menampung data pegawai
  */
 
-address TambahPegawai(address *root, int value, char* nama);
+address TambahPegawai(address root, int value, char* nama);
 /*
  * [Author]
  * Nama : M Nabil Haritshah Away
@@ -72,7 +74,7 @@ address minIdPegawai(address pegawai);
  * Mencari pegawai dengan id terkecil
  */
 
-address HapusPegawai(address root, Pegawai pegawai);
+address HapusPegawai(address root, Pegawai pegawai, bool *status);
 /*
  * [Author]
  * Nama : M Fauzi Rizki Hamdalah
@@ -82,7 +84,7 @@ address HapusPegawai(address root, Pegawai pegawai);
  * Mendealokasikan memori yang dipesan untuk menampung data Pegawai
  */
 
-void HapusSemuaPegawai(address* pegawai);
+address HapusSemuaPegawai(address pegawai);
 /*
  * [Author]
  * Nama : Rafli Lutfiansyah Mauluddin
