@@ -94,8 +94,10 @@ address minIdPegawai(address pegawai)
     address find = pegawai;
 
     // temukan pegawai yang paling kiri
-    while (pegawai && pegawai->left != NULL)
+    while (find && find->left != NULL)
+    {
         find = find->left;
+    }
 
     return find;
 }

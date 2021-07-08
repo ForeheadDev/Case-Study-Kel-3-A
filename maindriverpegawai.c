@@ -26,16 +26,15 @@ int main()
 	DataPegawai D;
 	BuatDataPegawai(&D);
 
-	address root = TambahPegawai(&D.root, 1, "test");
-	address rootsd12a = TambahPegawai(&D.root, 7, "test6");
-	address rootsda = TambahPegawai(&D.root, 6, "test6");
-	address root2 = TambahPegawai(&D.root, 4, "test4");
-	address root3 = TambahPegawai(&D.root, -1, "test-1");
-	address root4 = TambahPegawai(&D.root, -2, "test-2");
-
-	address p = CariPegawai(D.root, 6);
-	HapusPegawai(D.root, *p);
-	PrintPegawaiInOrder(D.root);
+	address root = TambahPegawai(&D.root, 15, "a");
+	root = TambahPegawai(&D.root, 11, "a");
+	root = TambahPegawai(&D.root, 51, "a");
+	root = TambahPegawai(&D.root, 69, "a");
+	root = TambahPegawai(&D.root, 67, "a");
+	root = TambahPegawai(&D.root, 65, "a");
+	root = TambahPegawai(&D.root, 91, "a");
+	root = TambahPegawai(&D.root, 80, "a");
+	PrintPegawaiPreOrder(D.root);
 
 
 	return 0;
